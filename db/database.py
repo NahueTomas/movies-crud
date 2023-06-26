@@ -31,13 +31,13 @@ class Database:
 
     def get_movie(self, id: Id) -> Movie | None:
         for item in self.movies:
-            if item.id == id:
+            if str(item.id) == str(id):
                 return item
         return None
 
     def update_movie(self, data: MoviePut, id) -> Movie | None:
         for item in self.movies:
-            if item.id == id:
+            if str(item.id) == str(id):
                 if (data.title):
                     item.title = data.title
                 if (data.release):
