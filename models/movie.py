@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Literal
 
-from uuid import uuid4, UUID
+from uuid import UUID
 
 Id = UUID
 Title = str
