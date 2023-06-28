@@ -13,21 +13,21 @@ movies = APIRouter(
 
 
 @movies.get('/', response_model=Movies)
-def get_all():
+def get_all() -> JSONResponse:
     movies: Movies = db.get_all_movies()
     return JSONResponse(content=jsonable_encoder(movies), status_code=status.HTTP_200_OK)
 
 
 @movies.get('/{id}', response_model=Movie)
-def get_movie(id: Id):
+def get_movie(id: Id) -> JSONResponse:
     movie: Movie | None = db.get_movie(id)
     if not (movie):
-        return Response(status_code=status.HTTP_404_NOT_FOUND)
+        return JSONResponse(content={"message": "Movie does not exist"}, status_code=status.HTTP_404_NOT_FOUND)
     return JSONResponse(content=jsonable_encoder(movie), status_code=status.HTTP_200_OK)
 
 
 @movies.post('/', response_model=Movie)
-def create_movie(movie: MovieCreate):
+def create_movie(movie: MovieCreate) -> JSONResponse:
     new_movie: Movie | None = db.create_movie(
         title=movie.title,
         release=movie.release,
@@ -38,8 +38,8 @@ def create_movie(movie: MovieCreate):
 
 
 @movies.put('/{id}', response_model=Movie)
-def update_movie(movie: MoviePut, id: Id):
+def update_movie(movie: MoviePut, id: Id) -> JSONResponse:
     updated_movie: Movie | None = db.update_movie(movie, id)
     if not (updated_movie):
-        return Response(status_code=status.HTTP_404_NOT_FOUND)
+        return JSONResponse(content={"message": "Movie does not exist"}, status_code=status.HTTP_404_NOT_FOUND)
     return JSONResponse(content=jsonable_encoder(updated_movie), status_code=status.HTTP_200_OK)
